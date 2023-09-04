@@ -23,7 +23,12 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countSumLengthOfWords(String text) {
-        return 0;
+        List<String> stringList = new ArrayList<>(getWords(text));
+        int count = 0;
+        for (String str : stringList) {
+            count += str.length();
+        }
+        return count;
     }
 
     /**
@@ -34,7 +39,8 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfWords(String text) {
-        return 0;
+        List<String> stringList = new ArrayList<>(getWords(text));
+        return stringList.size();
     }
 
     /**
@@ -44,7 +50,9 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public int countNumberOfUniqueWords(String text) {
-        return 0;
+        List<String> stringList = new ArrayList<>(getWords(text));
+        Set<String> stringSet = new HashSet<>(stringList);
+        return stringSet.size();
     }
 
     /**
@@ -57,7 +65,7 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> getWords(String text) {
-        return emptyList();
+        return new ArrayList<>(Arrays.asList(text.split("\\W+")));
     }
 
     /**
@@ -70,7 +78,8 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Set<String> getUniqueWords(String text) {
-        return emptySet();
+        List<String> stringList = new ArrayList<>(getWords(text));
+        return new HashSet<>(stringList);
     }
 
     /**
@@ -82,7 +91,16 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public Map<String, Integer> countNumberOfWordsRepetitions(String text) {
-        return emptyMap();
+        List<String> stringList = new ArrayList<>(getWords(text));
+        Map<String, Integer> stringIntegerMap = new HashMap<>();
+        for (String str : stringList) {
+            if (stringIntegerMap.containsKey(str)) {
+                stringIntegerMap.put(str, stringIntegerMap.get(str) + 1);
+            } else {
+                stringIntegerMap.put(str, 1);
+            }
+        }
+        return stringIntegerMap;
     }
 
     /**
@@ -95,6 +113,11 @@ public class SimpleTextStatisticsAnalyzer implements TextStatisticsAnalyzer {
      */
     @Override
     public List<String> sortWordsByLength(String text, Direction direction) {
-        return emptyList();
+        List<String> stringList = new ArrayList<>(getWords(text));
+        stringList.sort(Comparator.comparing(String::length));
+        if (direction.equals(Direction.DESC)) {
+            Collections.reverse(stringList);
+        }
+        return stringList;
     }
 }
